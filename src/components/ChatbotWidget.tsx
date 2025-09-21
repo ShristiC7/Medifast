@@ -31,7 +31,7 @@ const ChatbotWidget = memo(function ChatbotWidget() {
     "Check test reports"
   ];
 
-  const handleSendMessage = useCallback(() => {
+  const handleSendMessage = useCallback(async () => {
     if (!inputValue.trim()) return;
 
     const newMessage = {
@@ -45,25 +45,46 @@ const ChatbotWidget = memo(function ChatbotWidget() {
     setInputValue("");
     setIsTyping(true);
 
-    // Simulate bot typing and response
-    setTimeout(() => {
-      setIsTyping(false);
-      const responses = [
-        "I understand you're looking for help with that. Let me connect you with the right service.",
-        "That's a great question! Let me find the best solution for you.",
-        "I'm here to help! Let me gather some information for you.",
-        "Perfect! I can definitely assist you with that request."
-      ];
+    try {
+      const response = await fetch("https://spies-clip-franchise-cloth.trycloudflare.com/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          message: inputValue,
+          history: messages.map(m => ({
+            role: m.sender === "user" ? "user" : "assistant",
+            content: m.text
+          }))
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
       
       const botResponse = {
         id: messages.length + 2,
-        text: responses[Math.floor(Math.random() * responses.length)],
+        text: data.answer, // Assuming the API response has a 'text' field
         sender: "bot" as const,
         timestamp: new Date()
       };
+
       setMessages(prev => [...prev, botResponse]);
-    }, 2000);
-  }, [inputValue, messages.length]);
+    } catch (error) {
+      console.error("Failed to fetch bot response:", error);
+      const errorMessage = {
+        id: messages.length + 2,
+        text: "Sorry, I'm having trouble connecting right now. Please try again later.",
+        sender: "bot" as const,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
+    }
+  }, [inputValue, messages]);
 
   const handleSuggestionClick = useCallback((suggestion: string) => {
     setInputValue(suggestion);
