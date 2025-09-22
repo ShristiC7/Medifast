@@ -96,20 +96,20 @@ export function EmergencyServices({ onBack }: EmergencyServicesProps) {
       color: "from-red-500 to-red-600",
       icon: Phone
     },
-    {
-      title: "Police Emergency",
-      subtitle: "Immediate Police Assistance",
-      number: "100",
-      color: "from-blue-500 to-blue-600",
-      icon: Shield
-    },
-    {
-      title: "Fire Emergency",
-      subtitle: "Fire & Rescue Services",
-      number: "101",
-      color: "from-orange-500 to-orange-600",
-      icon: Zap
-    }
+    // {
+    //   title: "Police Emergency",
+    //   subtitle: "Immediate Police Assistance",
+    //   number: "100",
+    //   color: "from-blue-500 to-blue-600",
+    //   icon: Shield
+    // },
+    // {
+    //   title: "Fire Emergency",
+    //   subtitle: "Fire & Rescue Services",
+    //   number: "101",
+    //   color: "from-orange-500 to-orange-600",
+    //   icon: Zap
+    // }
   ];
 
   const nearbyHospitals = [
