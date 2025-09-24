@@ -1,7 +1,6 @@
 
   # Online Medical Wellness Platform UI
 
-  This is a code bundle for Online Medical Wellness Platform UI.
 
   The WebApp is now live at:
   `https://medifast-sc.vercel.app/`
